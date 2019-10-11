@@ -37,3 +37,4 @@ export function saveProduct(product){
 export function deleteMovie(productId){
     return http.delete(productsUrl(productId));
 }
+

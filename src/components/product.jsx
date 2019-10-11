@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class Product extends Component {
     state = {  }
     
     render() { 
-        const { product } = this.props;
+        const { product , onItemAddedMessage } = this.props;
         return ( 
             <div className="col-lg-4 col-md-6 mb-4">
                     <div className="card h-100">
-                        <a href="#"><img className="card-img-top" src={"https://cdn11.bigcommerce.com/s-pkla4xn3/images/stencil/1280x1280/products/7680/70046/Plyesxale-Men-Suit-2018-Wedding-Suits-For-Men-Shawl-Collar-3-Pieces-Slim-Fit-Burgundy-Suit__18578.1527763490.jpg?c=2&imbypass=on"} alt="Image not Loaded" /></a>
+                        <Link  to="/"><img className="card-img-top" src={"https://backendapi.turing.com/images/products/" + product.thumbnail} alt="Error not Loaded" /></Link>
                             <div className="card-body">
+
                                 <h4 className="card-title">
-                                    <a href="#">{ product.name }</a>
+                                    <Link to="/" style={{ textDecoration: 'none' }}>{ product.name }</Link>
                                 </h4>
-                                <h5>{product.price}</h5>
+                                <h6 className="card-price text-center"> $ {product.price}<span className="period"></span></h6>
                                 <p className="card-text">{product.discription}</p>
                             </div>
                             <div className="card-footer">
-                                <small className="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+                                <Link to={`/items/${product.product_id}`}>
+                                    <button type="button" onClick={() => onItemAddedMessage(false)} className="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                    Add to Cart
+                                    </button>
+                                </Link>
+
                             </div>
                 </div> 
 

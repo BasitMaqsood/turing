@@ -7,8 +7,18 @@ const tokenKey = 'token';
 
 
 export async function login(email , password){
-    const { data: jwt } = await http.post(apiEndpoint , { email , password });
+    const { data:{accessToken: jwt} } = await http.post(apiEndpoint , { email , password });
+    
     localStorage.setItem(tokenKey , jwt);
+    console.log("Token in service" ,jwt);
+    return jwt;
+}
+
+export async function getAuthToken(){
+    const result = await http.get('https://backendapi.turing.com/customer');
+    localStorage.setItem('token' , result)
+    return;
+    console.log('Result ', result);
 }
 
 export function loginWithJwt(jwt){

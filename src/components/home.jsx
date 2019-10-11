@@ -7,6 +7,7 @@ import { getProducts } from '../services/productServices';
 import { getProductsByCategory } from '../services/productServices';
 
 
+
 class Home extends Form {
     state = {
         categories:[],
@@ -20,7 +21,7 @@ class Home extends Form {
 
         let { data: { rows: categories } } = await getCategories();
        
-        categories = [{ category_id : "0" , name: 'All Categories'} , ...categories];
+        categories = [{ category_id : 0 , name: 'All Categories'} , ...categories];
 
         let { data: { rows: products } } = await getProducts();
 
@@ -36,35 +37,29 @@ class Home extends Form {
         this.setState({
             selectedCategory: category
         })
+        this.getFilteredProducts(category.category_id)
         
     }
 
-    async getFilteredProducts(category_id){
-        let { data: {rows: filteredProducts}} = await getProductsByCategory(category_id);
-        return filteredProducts;
+    handleAddItem = product =>{
+        console.log(product);
     }
 
-    async componentDidUpdate(){
-        const { selectedCategory } = this.state;
-        if(selectedCategory){
-            let filteredProducts = await this.getFilteredProducts(selectedCategory.category_id);
-            this.setState({
-                filteredProducts
-                });
-            }
+    async getFilteredProducts(category_id){
+        let data;
+        if(category_id===0)
+                 data = await getProducts();
+        else 
+            data = await getProductsByCategory(category_id);
+        const { data: {rows: products}}=data;
+        this.setState({products}) ;
     }
+
 
     render(){
-        const { products , filteredProducts } = this.state;
-        let finalProducts = products;
-        if(filteredProducts){
-            finalProducts = filteredProducts;
-        }else{
-            finalProducts = products;
-        }
-       
-       
-           
+        const { products } = this.state;
+        const { onItemAddedMessage } = this.props;
+         
         return ( 
            <React.Fragment>
         
@@ -88,13 +83,16 @@ class Home extends Form {
                     <div className="col-lg-9">
     
                         <div className="row">
-                        <Products 
-                          products={finalProducts}/>
+                        <Products
+                          onItemAddedMessage={onItemAddedMessage} 
+                          products={products}
+                          onAddItem={this.handleAddItem}/>
              
                         </div>
                     </div>
 
                     </div>
+
                 
     
                 </div>

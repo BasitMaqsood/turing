@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ListGroup = ({ items, textProperty, valueProperty, onItemSelect, selectedItem }) => {
-    console.log('items',items,valueProperty,items)
+    console.log('items',items)
     return ( 
         <ul className="list-group">
             { items.map(((item,index) => 
